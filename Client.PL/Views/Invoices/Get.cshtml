@@ -1,0 +1,76 @@
+﻿@using Mid.BL.Dtos;
+@model InvoiceUpdateDto
+<hr />
+<form asp-action="Update">
+    <table>
+    <tr>
+        <td>Invoice Code</td>
+        <td>
+            <input asp-for="InvoiceID" readonly>
+        </td>
+        <td>Invoice Date</td>
+        <td>
+            <input asp-for="InvoiceDate">
+        </td>
+    </tr>
+    <tr>
+        <td>Customer</td>
+        <td>
+            <input asp-for="Customer">
+        </td>
+        <td>Payment Method</td>
+        <td>
+            <form asp-action="">
+                <div class="form-check">
+                    <input asp-for="PaymentMethod" type="radio" value="true">Cash
+                    <input asp-for="PaymentMethod" type="radio" value="false">Credit
+                </div>
+            </form>
+            
+        </td>
+    </tr>
+    <tr>
+        <td>Description</td>
+        <td>
+            <textarea asp-for="Description">
+                       @Model.Description
+            </textarea>
+        </td>
+    </tr>
+    <tr>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <td>Item Code</td>
+                    <td>Item Name</td>
+                    <td>Qty</td>
+                    <td>Pric</td>
+                    <td>Total</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>
+                            <input value="@item.ItemId" readonly>
+                        </td>
+                        <td>
+                                <input asp-for="@item.ItemName">
+                        </td>
+                        <td>
+                                <input asp-for="@item.Qty">
+                        </td>
+                        <td>
+                                <input asp-for="@item.Price">
+                        </td>
+                        <td>@(item.Qty * item.Price)</td>
+                     </tr>    
+                } 
+            </tbody>        
+        </table>
+    </tr>
+    </table>
+    <button type="submit" class="btn btn-outline-dark"> Update Invoice</button>
+</form>
+<button class="brn btn-outline-danger" asp-action="Delete" asp-route-Id="@Model.InvoiceID">Delete Invoice</button>

@@ -1,0 +1,59 @@
+﻿@using Mid.BL.Dtos;
+@model List<InvoiceReadDto>
+<form>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">InvoiceID</th>
+          <th scope="col">InvoiceDate</th>
+          <th scope="col">Customer</th>
+          <th scope="col">Payment Method</th>
+          <th scope="col">Description</th> 
+          <th>Info</th>
+        </tr>
+      </thead>
+      <tbody>
+          @foreach(var i in Model)
+          {
+                <tr>
+                    <td>@i.InvoiceID</td>
+                    <td>@i.InvoiceDate</td>
+                    <td>@i.Customer</td>
+                    @if (i.PaymentMethod == true)
+                    {
+                        <td>Cash</td>
+                    }
+                    else
+                    {
+                        <td>Credit</td>
+                    }
+                    <td>@i.Description</td>
+                    <td>
+                        <a href="#" onclick="ShowDetails(@i.InvoiceID)">Show</a>
+                    </td>
+                </tr>
+          }
+      </tbody>
+    </table>
+<button asp-action="AddNew" class="btn btn-outline-primary">Add New Invoice</button>
+</form>
+
+<div id="detailsDiv" style="margin-left:40px;margin-right:40; padding:10px"></div>
+
+<div id="addInvoice"style="margin-left:40px;margin-right:40; padding:10px"></div>
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        function ShowDetails(id) {
+            event.preventDefault();
+            $.ajax({
+                url: "/get/"+id,
+                success: function(result){
+                    document.getElementById("detailsDiv").innerHTML = result;
+                    }
+            });
+        }
+    </script>
+}

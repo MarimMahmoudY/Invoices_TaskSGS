@@ -1,0 +1,78 @@
+﻿@using Mid.BL.Dtos;
+@model InvoiceAddDto
+<form asp-action="Add">
+    <table class="table">
+        <tr>
+            <td>Invoice Date</td>
+            <td>
+                <input asp-for="InvoiceDate">
+            </td>
+            <td>Customer</td>
+            <td>
+                <input asp-for="Customer">
+            </td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>
+                <textarea asp-for="Description">
+                    @Model.Description
+            </textarea>
+            </td>
+            <td>Payment Method</td>
+            <td>
+                <form>
+                    <div class="form-check">
+                        <input asp-for="PaymentMethod" type="radio" value="true">Cash
+                        <input asp-for="PaymentMethod" type="radio" value="false">Credit
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <div id="valDiv">
+        <div id="RowContainer"></div>
+    </div>
+                
+    <input type="button" id="addButton" value="Add New Item" class="btn btn-info"/>
+    <input type="submit" value="Add Invoice" class="btn btn-success"/>
+</form>
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            var i = 0;
+            $("#addButton").click(function () {
+                var row = $("<tr />");
+                var value = "";
+                var iname = $("<input />").attr("required","true").attr("style","margin:40px").attr("placeholder","---- Item Name ----").attr("type", "textbox").attr("name", "Items[" + i + "].ItemName");
+                var iqty = $("<input />").attr("required","true").attr("style", "margin:40px").attr("placeholder", "---- Qty ----").attr("type", "textbox").attr("name", "Items[" + i + "].Qty");
+                var iprice = $("<input />").attr("required","true").attr("style", "margin:40px").attr("placeholder", "---- Price ----").attr("type", "textbox").attr("name", "Items[" + i + "].Price");
+
+                iname.val(value);
+                iqty.val(value);
+                iprice.val(value);
+
+                row.append(iname);
+                row.append(iqty);
+                row.append(iprice);
+
+                var btnRemove = $("<input />").attr("type", "button").attr("value", "Remove");
+                btnRemove.attr("onclick", "RemoveRow(this)");
+
+                row.append(btnRemove);
+
+                $("#RowContainer").append(row);
+                i++;
+            });
+        });
+        function RemoveRow(btnRemove) {
+
+            $(btnRemove).parent().remove();
+        }
+    </script>
+}
+  
